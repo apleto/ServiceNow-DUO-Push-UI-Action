@@ -1,0 +1,60 @@
+{
+  "name": "duo-button",
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Shawn M Bradley",
+    "email": "shawn.bradley@outlook.com"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": "^10.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "scripts": {
+    "test": "npm run eslint && npm run mocha",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "dev": "nodemon src/",
+    "start": "node src/",
+    "mocha": "mocha test/ --recursive --exit"
+  },
+  "dependencies": {
+    "@duosecurity/duo_api": "^1.2.1",
+    "@feathersjs/authentication": "^4.5.1",
+    "@feathersjs/authentication-local": "^4.5.1",
+    "@feathersjs/authentication-oauth": "^4.5.1",
+    "@feathersjs/configuration": "^4.5.1",
+    "@feathersjs/errors": "^4.5.1",
+    "@feathersjs/express": "^4.5.1",
+    "@feathersjs/feathers": "^4.5.1",
+    "@feathersjs/socketio": "^4.5.1",
+    "@feathersjs/transport-commons": "^4.5.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "feathers-nedb": "^5.1.0",
+    "feathers-sequelize": "^6.1.0",
+    "helmet": "^3.21.2",
+    "mssql": "^6.1.0",
+    "nedb": "^1.8.0",
+    "sequelize": "^5.21.5",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "eslint": "^6.8.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^2.0.2"
+  }
+}
