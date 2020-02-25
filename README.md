@@ -9,4 +9,4 @@
 
 ## Help
 
-If you need help or find an issue please let us know by creating an issue on GitHub (https://github.com/apleto/ServiceNow-DUO-Push-UI-Action/issues/new).
+If you need help or find an issue please let us know by creating an issue on GitHub [here](https://github.com/apleto/ServiceNow-DUO-Push-UI-Action/issues/new).
