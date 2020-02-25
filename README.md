@@ -1,6 +1,8 @@
-# ServiceNow (SNOW) UI Action to validate caller identity using DUO mobile multi factor authentication (MFA)
+# ServiceNow UI Action for DUO MFA
 
-> The goal of this project is to provide a working example to illustrate enabling this functionality in a ServiceNow instance.
+> ServiceNow (SNOW) UI Action to validate caller identity using DUO mobile multi factor authentication (MFA)
+
+
 
 ## Instructions
 
