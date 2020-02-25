@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><unload unload_date="2020-02-25 19:50:52">
+<sys_remote_update_set action="INSERT_OR_UPDATE">
+<application display_value="Global">global</application>
+<application_name>Global</application_name>
+<application_scope>global</application_scope>
+<application_version/>
+<collisions/>
+<commit_date/>
+<deleted/>
+<description>Add DUO push to user record to validate person...</description>
+<inserted/>
+<name>SMB - DUO Push</name>
+<origin_sys_id/>
+<parent display_value=""/>
+<release_date/>
+<remote_base_update_set display_value=""/>
+<remote_parent_id/>
+<remote_sys_id>7b2b3d3b1bcfc810751dbbb21a4bcb89</remote_sys_id>
+<state>loaded</state>
+<summary/>
+<sys_class_name>sys_remote_update_set</sys_class_name>
+<sys_created_by>SHABRB</sys_created_by>
+<sys_created_on>2020-02-25 19:50:52</sys_created_on>
+<sys_id>fcd14bf31b834050d82b11761a4bcbdb</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_updated_by>SHABRB</sys_updated_by>
+<sys_updated_on>2020-02-25 19:50:52</sys_updated_on>
+<update_set display_value=""/>
+<update_source display_value=""/>
+<updated/>
+</sys_remote_update_set>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_ui_action_f9f8e739dbcb80103a41fd7aae9619cb</name>
+<payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="INSERT_OR_UPDATE"&gt;&lt;action_name&gt;chst_duo_push&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;true&lt;/client&gt;&lt;client_script_v2&gt;&lt;![CDATA[function onClick(g_form) {
+
+}]]&gt;&lt;/client_script_v2&gt;&lt;comments&gt;Sends a DUO push to the user to validate identity.&lt;/comments&gt;&lt;condition/&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;true&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;true&lt;/form_context_menu&gt;&lt;form_link&gt;true&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint&gt;Sends a DUO push for the user.&lt;/hint&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;DUO Push&lt;/name&gt;&lt;onclick&gt;confirmPush();&lt;/onclick&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[function confirmPush() {
+	var conf = confirm("Are you sure you would like to send a DUO push to this user?");
+	if (conf){
+		gsftSubmit(null, g_form.getFormElement(), 'chst_duo_push');
+
+	} else {
+		
+		return false;
+	}
+}
+
+function sendPush() {
+ try { 
+	 var r = new sn_ws.RESTMessageV2('DUO Push REST API', 'DO AUTH');
+	 var username = current.user_name;
+	 r.setStringParameterNoEscape('username', username);
+	 r.setStringParameterNoEscape('requested_by', gs.getUser().getRecord().getValue('user_name'));	 
+
+	//override authentication profile 
+	//authentication type ='basic'/ 'oauth2'
+	//r.setAuthenticationProfile(authentication type, profile name);
+
+	//set a MID server name if one wants to run the message on MID
+	//r.setMIDServer('MY_MID_SERVER');
+
+	//if the message is configured to communicate through ECC queue, either
+	//by setting a MID server or calling executeAsync, one needs to set skip_sensor
+	//to true. Otherwise, one may get an intermittent error that the response body is null
+	//r.setEccParameter('skip_sensor', true);
+
+	 var response = r.execute();
+	 var responseBody = response.getBody();
+	 var httpStatus = response.getStatusCode();
+	 
+	 var data = JSON.parse(responseBody);
+	 
+	 if( data.result == 'allow' ) {
+		gs.addInfoMessage('The DUO push was accepted by the user.');
+		 action.setRedirectURL(current);
+	 }
+	 
+	 if( data.result == 'deny' ) {
+		 
+		 gs.addErrorMessage('The DUO push was denied by the user.');
+		 action.setRedirectURL(current);		 
+		 
+	 }
+	 
+	 
+	 if( data.result == 'user-not-valid' ) {
+		 
+		 gs.addErrorMessage('The user is not active in DUO or has no enrolled devices...');
+		 action.setRedirectURL(current);		 
+		 
+	 }	 
+
+	 gs.info('DUO: ' + responseBody);
+}
+	catch(ex) {
+		 var message = ex.message;
+	}	
+}
+sendPush();]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;SHABRB&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-02-19 17:38:59&lt;/sys_created_on&gt;&lt;sys_customer_update&gt;false&lt;/sys_customer_update&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;f9f8e739dbcb80103a41fd7aae9619cb&lt;/sys_id&gt;&lt;sys_mod_count&gt;11&lt;/sys_mod_count&gt;&lt;sys_name&gt;DUO Push&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_replace_on_upgrade&gt;false&lt;/sys_replace_on_upgrade&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_f9f8e739dbcb80103a41fd7aae9619cb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;SHABRB&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-02-25 19:30:04&lt;/sys_updated_on&gt;&lt;table&gt;sys_user&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+<payload_hash>1018073231</payload_hash>
+<remote_update_set display_value="SMB - DUO Push">fcd14bf31b834050d82b11761a4bcbdb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>SHABRB</sys_created_by>
+<sys_created_on>2020-02-25 19:50:52</sys_created_on>
+<sys_id>38d14bf31b834050d82b11761a4bcbdd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1707dd3e86d0000001</sys_recorded_at>
+<sys_updated_by>SHABRB</sys_updated_by>
+<sys_updated_on>2020-02-25 19:50:52</sys_updated_on>
+<table>sys_user</table>
+<target_name>DUO Push</target_name>
+<type>UI Action</type>
+<update_domain>global</update_domain>
+<update_guid>401d727f18cf00507850e9dff0ec3849</update_guid>
+<update_guid_history>401d727f18cf00507850e9dff0ec3849:1018073231,614fc63fb4cb0c1093fd0ece8f4dc042:1606855322,009bb97f78cfc810eedfe5961433ba95:1274984702,0ff04882fb8f8010dbbe649b98646b27:786957449,95a0c842988f80108b4fe6553276d538:-1782725812,bd900842f18f80108bf3f73a840868fa:786957449,e930c042888f801000b15e1158ec9990:-679137861,a72f37f9d84f801006999dff863fce86:938258118,c80777fd550f8010c982e0627c2c6d0c:-1030739007,18b6fbbdc50f8010f3d23959e3f921a2:1641251681,eb46377dcd0f8010cd9ad2bee800f640:-2023908518,ae1a23b966cb8010efb13c8eeb9cae7f:1627179395</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_rest_message_fn_parameters_1b60833b1b434050d82b11761a4bcb15</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn_parameters"><sys_rest_message_fn_parameters action="INSERT_OR_UPDATE"><name>username</name><rest_message_function display_value="DO AUTH">b8bd3ef31b034050d82b11761a4bcbca</rest_message_function><sys_class_name>sys_rest_message_fn_parameters</sys_class_name><sys_created_by>SHABRB</sys_created_by><sys_created_on>2020-02-25 19:44:54</sys_created_on><sys_customer_update>false</sys_customer_update><sys_id>1b60833b1b434050d82b11761a4bcb15</sys_id><sys_mod_count>0</sys_mod_count><sys_name>username</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_replace_on_upgrade>false</sys_replace_on_upgrade><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_rest_message_fn_parameters_1b60833b1b434050d82b11761a4bcb15</sys_update_name><sys_updated_by>SHABRB</sys_updated_by><sys_updated_on>2020-02-25 19:44:54</sys_updated_on><type>string</type><value>admin</value></sys_rest_message_fn_parameters></record_update>]]></payload>
+<payload_hash>462391141</payload_hash>
+<remote_update_set display_value="SMB - DUO Push">fcd14bf31b834050d82b11761a4bcbdb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>SHABRB</sys_created_by>
+<sys_created_on>2020-02-25 19:50:52</sys_created_on>
+<sys_id>74d14bf31b834050d82b11761a4bcbdd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1707de17c430000001</sys_recorded_at>
+<sys_updated_by>SHABRB</sys_updated_by>
+<sys_updated_on>2020-02-25 19:50:52</sys_updated_on>
+<table/>
+<target_name>username</target_name>
+<type>Variable Substitutions</type>
+<update_domain>global</update_domain>
+<update_guid>dd70073ba7434050bc179ebb2fa66438</update_guid>
+<update_guid_history>dd70073ba7434050bc179ebb2fa66438:462391141</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_rest_message_fn_parameters_0350cff71b434050d82b11761a4bcb95</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn_parameters"><sys_rest_message_fn_parameters action="INSERT_OR_UPDATE"><name>requested_by</name><rest_message_function display_value="DO AUTH">b8bd3ef31b034050d82b11761a4bcbca</rest_message_function><sys_class_name>sys_rest_message_fn_parameters</sys_class_name><sys_created_by>SHABRB</sys_created_by><sys_created_on>2020-02-25 19:44:39</sys_created_on><sys_customer_update>false</sys_customer_update><sys_id>0350cff71b434050d82b11761a4bcb95</sys_id><sys_mod_count>0</sys_mod_count><sys_name>requested_by</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_replace_on_upgrade>false</sys_replace_on_upgrade><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_rest_message_fn_parameters_0350cff71b434050d82b11761a4bcb95</sys_update_name><sys_updated_by>SHABRB</sys_updated_by><sys_updated_on>2020-02-25 19:44:39</sys_updated_on><type>string</type><value>admin</value></sys_rest_message_fn_parameters></record_update>]]></payload>
+<payload_hash>-1116935259</payload_hash>
+<remote_update_set display_value="SMB - DUO Push">fcd14bf31b834050d82b11761a4bcbdb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>SHABRB</sys_created_by>
+<sys_created_on>2020-02-25 19:50:52</sys_created_on>
+<sys_id>b0d14bf31b834050d82b11761a4bcbdd</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1707de143e40000001</sys_recorded_at>
+<sys_updated_by>SHABRB</sys_updated_by>
+<sys_updated_on>2020-02-25 19:50:52</sys_updated_on>
+<table/>
+<target_name>requested_by</target_name>
+<type>Variable Substitutions</type>
+<update_domain>global</update_domain>
+<update_guid>b5608ff7364340504143e007006a1ecb</update_guid>
+<update_guid_history>b5608ff7364340504143e007006a1ecb:-1116935259</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_rest_message_857d72731b034050d82b11761a4bcb94</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message"><sys_rest_message action="INSERT_OR_UPDATE"><access>package_private</access><authentication_type>no_authentication</authentication_type><basic_auth_password/><basic_auth_profile/><basic_auth_user/><description>REST API configuration used by the DUO UI Action</description><name>DUO Push REST API</name><oauth2_profile/><protocol_name/><rest_endpoint>https://duoauth.company.com</rest_endpoint><sys_class_name>sys_rest_message</sys_class_name><sys_created_by>SHABRB</sys_created_by><sys_created_on>2020-02-25 19:32:50</sys_created_on><sys_customer_update>false</sys_customer_update><sys_id>857d72731b034050d82b11761a4bcb94</sys_id><sys_mod_count>1</sys_mod_count><sys_name>DUO Push REST API</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_replace_on_upgrade>false</sys_replace_on_upgrade><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_rest_message_857d72731b034050d82b11761a4bcb94</sys_update_name><sys_updated_by>SHABRB</sys_updated_by><sys_updated_on>2020-02-25 19:33:03</sys_updated_on><use_basic_auth>false</use_basic_auth><use_mutual_auth>false</use_mutual_auth></sys_rest_message></record_update>]]></payload>
+<payload_hash>-2115559695</payload_hash>
+<remote_update_set display_value="SMB - DUO Push">fcd14bf31b834050d82b11761a4bcbdb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>SHABRB</sys_created_by>
+<sys_created_on>2020-02-25 19:50:52</sys_created_on>
+<sys_id>f4d14bf31b834050d82b11761a4bcbdc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1707dd6a5410000001</sys_recorded_at>
+<sys_updated_by>SHABRB</sys_updated_by>
+<sys_updated_on>2020-02-25 19:50:52</sys_updated_on>
+<table/>
+<target_name>DUO Push REST API</target_name>
+<type>REST Message</type>
+<update_domain>global</update_domain>
+<update_guid>8ccd3ef331034050e0aa6c75be323cd5</update_guid>
+<update_guid_history>8ccd3ef331034050e0aa6c75be323cd5:-2115559695,b8bdba379a0340507af296673c1a87d8:107423240</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+<sys_update_xml action="INSERT_OR_UPDATE">
+<action>INSERT_OR_UPDATE</action>
+<application display_value="Global">global</application>
+<category>customer</category>
+<comments/>
+<name>sys_rest_message_fn_b8bd3ef31b034050d82b11761a4bcbca</name>
+<payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn"><sys_rest_message_fn action="INSERT_OR_UPDATE"><authentication_type>inherit_from_parent</authentication_type><basic_auth_password/><basic_auth_profile/><basic_auth_user>shawn.bradley@outlook.com</basic_auth_user><content>{&#13;
+  "username": "${username}",&#13;
+  "requested_by": "${requested_by}"&#13;
+}</content><function_name>DO AUTH</function_name><http_method>post</http_method><lock>false</lock><oauth2_profile/><protocol_name/><qualified_name>DUO Push REST API [ DO AUTH ]</qualified_name><rest_endpoint>https://duoauth.company.com/auth</rest_endpoint><rest_message display_value="DUO Push REST API">857d72731b034050d82b11761a4bcb94</rest_message><sys_class_name>sys_rest_message_fn</sys_class_name><sys_created_by>SHABRB</sys_created_by><sys_created_on>2020-02-25 19:32:50</sys_created_on><sys_customer_update>false</sys_customer_update><sys_id>b8bd3ef31b034050d82b11761a4bcbca</sys_id><sys_mod_count>5</sys_mod_count><sys_name>DO AUTH</sys_name><sys_package display_value="Global" source="global">global</sys_package><sys_policy/><sys_replace_on_upgrade>false</sys_replace_on_upgrade><sys_scope display_value="Global">global</sys_scope><sys_update_name>sys_rest_message_fn_b8bd3ef31b034050d82b11761a4bcbca</sys_update_name><sys_updated_by>SHABRB</sys_updated_by><sys_updated_on>2020-02-25 19:44:23</sys_updated_on><use_basic_auth>false</use_basic_auth><use_mid_server/><use_mutual_auth>false</use_mutual_auth></sys_rest_message_fn></record_update>]]></payload>
+<payload_hash>271217559</payload_hash>
+<remote_update_set display_value="SMB - DUO Push">fcd14bf31b834050d82b11761a4bcbdb</remote_update_set>
+<replace_on_upgrade>false</replace_on_upgrade>
+<sys_created_by>SHABRB</sys_created_by>
+<sys_created_on>2020-02-25 19:50:52</sys_created_on>
+<sys_id>fcd14bf31b834050d82b11761a4bcbdc</sys_id>
+<sys_mod_count>0</sys_mod_count>
+<sys_recorded_at>1707de103de0000001</sys_recorded_at>
+<sys_updated_by>SHABRB</sys_updated_by>
+<sys_updated_on>2020-02-25 19:50:52</sys_updated_on>
+<table/>
+<target_name>DO AUTH</target_name>
+<type>HTTP Method</type>
+<update_domain>global</update_domain>
+<update_guid>35508bf7f8434050df21c0a66bf8cd25</update_guid>
+<update_guid_history>35508bf7f8434050df21c0a66bf8cd25:271217559,91ed7eb7b803405090bf27687e19806a:803523409,aadd7ab7c603405092d7794dabfaf541:523884224,b5dd7ab7ca034050ef76b900fead343d:-118140792,13cd767716034050cdba938c94aa7f63:-1836526342,70bd3ef3d1034050dd95d174f53c73cc:2026856685</update_guid_history>
+<update_set display_value=""/>
+<view/>
+</sys_update_xml>
+</unload>

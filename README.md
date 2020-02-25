@@ -1,45 +1,10 @@
-# duo-button
+# ServiceNow (SNOW) UI Action to validate caller identity using DUO mobile multi factor authentication (MFA)
 
-> 
+> The goal of this project is to provide a working example to illustrate enabling this functionality in a ServiceNow instance.
 
-## About
+## Instructions
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
-
-## Getting Started
-
-Getting up and running is as easy as 1, 2, 3.
-
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
-
-    ```
-    cd path/to/duo-button
-    npm install
-    ```
-
-3. Start your app
-
-    ```
-    npm start
-    ```
-
-## Testing
-
-Simply run `npm test` and all your tests in the `test/` directory will be run.
-
-## Scaffolding
-
-Feathers has a powerful command line interface. Here are a few things it can do:
-
-```
-$ npm install -g @feathersjs/cli          # Install Feathers CLI
-
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers help                           # Show all commands
-```
 
 ## Help
 
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+If you need help or find an issue please let us know by creating an issue on GitHub (https://github.com/apleto/ServiceNow-DUO-Push-UI-Action/issues/new).
