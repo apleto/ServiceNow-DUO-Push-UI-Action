@@ -16,6 +16,8 @@
 3.  A machine that can be accessed by the MID using http port 3030
     1.  Theoretically this could be the ServiceNow MID Server
     2.  This machine should have Docker installed and be able to run linux containers
+4.  A Microsoft SQL Server / Database.  This can be a shared SQL server and is only used to log requests for reporting...
+    1.  The user account should have the required permissions to create the table
 
 ### Server Configuration
 
