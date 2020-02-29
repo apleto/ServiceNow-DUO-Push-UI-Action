@@ -2,6 +2,9 @@
 
 > ServiceNow (SNOW) UI Action to validate caller identity using DUO mobile multi factor authentication (MFA)
 
+## About Us
+Apleto, Inc strives to deliver solutions to simplify information technology support processes for end users and staff with tools like this one and our [JustHelp Agent](https://www.apleto.com/justhelp).
+
 
 
 ## Quick Start
