@@ -104,15 +104,34 @@ curl -k -d '{"username": "<USERNAME>", "requested_by": "<USERNAME>"}' -H 'Conten
 ```
 
 
-#### ServiceNow Configuration
+### ServiceNow Configuration
 
-Import duo_push_update_set.xml
+#### Import duo_push_update_set.xml
 
-1. In ServiceNow go to System Update Sets -> Retrieved Update Sets -> Import XML
+1. In ServiceNow go to System Update Sets -> Retrieved Update Sets -> Import XML and import the [duo_push_update_set.xml](duo_push_update_set.xml)
+
 ![Import Update Set](docs/import_updateset.gif)
+2. Open the SMB - DUO Push update set -> Preview Update Set -> Commit Update Set
+![Import Update Set](docs/commit_updateset.gif)
+
+#### Configure the REST Method
+
+The REST method configures ServiceNow to talk to the server / container that talks to the DUO Auth API
+
+1.  Go to System Web Services -> REST Message -> DUO Auth
+2.  Update the Endpoint - This should be the FQDN or IP for the DUO Auth API container running on your network.
+3.  Set the MID server to the MID server running on your network
+
+![Configure the REST Method](docs/configure_rest_method.gif)
 
 
-### Testing
+
+
+#### Testing From ServiceNow
+
+From a ServiceNow user form click DUO Push
+
+![DUO Push from User Form](docs/test_user_form.gif)
 
 
 ## Help
