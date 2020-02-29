@@ -8,7 +8,7 @@ Apleto, Inc strives to deliver solutions to simplify information technology supp
 
 
 ## Quick Start
-> The quick start instructions are intended to get you going so you can demonstrate this functionality.  Please see the detailed installation instructions for production.
+> The quick start instructions are intended to get you going so you can demonstrate this functionality.  In production you would need to modify the container code to support authentication and run it behind a load balancer or kubernetes ingress to enable https.
 
 ### Prerequisites
 1.  Access to a ServiceNow instance
@@ -80,7 +80,7 @@ sudo docker build -t duoauth:1.0.0 .
 Run the container
 
 ```bash
-sudo docker run -d -p 3030:3030 -e "IKEY=SHAWN" -e "SKEY=BOB" -e "HOST=asdf" duoauth:1.0.0
+sudo docker run -d -p 3030:3030 -e "IKEY=<DUO AUTHAPI INTERGRATION KEY>" -e "SKEY=<DUO AUTHAPI SECRET KEY" -e "HOST=asdf" duoauth:1.0.0
 ```
 
 Make sure the container is running
@@ -105,6 +105,11 @@ curl -k -d '{"username": "<USERNAME>", "requested_by": "<USERNAME>"}' -H 'Conten
 
 
 #### ServiceNow Configuration
+
+Import duo_push_update_set.xml
+
+1. In ServiceNow go to System Update Sets -> Retrieved Update Sets -> Import XML
+![Import Update Set](docs/import_updateset.gif)
 
 
 ### Testing
